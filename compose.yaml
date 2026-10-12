@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  apache:
+    container_name: apache
+    build: ./apache
+    ports:
+      - "8080:80"
+    volumes:
+      - ./www:/var/www/html
+    depends_on:
+      - php
+      - postgresSQL_db
+    networks:
+      - backend_network
+
+  php:
+    build: ./php
+    container_name: php
+    volumes: 
+      - ./www:/var/www/html
+    networks:
+      - backend_network
+
+  postgresSQL_db:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: admin
+      POSTGRES_DB: textbook_project
+    ports:
+      - "3200:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres:/docker-entrypoint-initdb.d
+    networks:
+      - backend_network
+
+volumes:
+  postgres_data:
+
+networks:
+  backend_network:
+	driver: bridge
