@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messages - CampusDrop</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .chat-container { display: grid; grid-template-columns: 300px 1fr; height: 80vh; background: white; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
         .trade-list { border-right: 1px solid var(--border); overflow-y: auto; background: #f8fafc; }
@@ -61,7 +61,7 @@
     const currentUserId = <?php echo $_SESSION['user_id'] ?? 'null'; ?>;
     let activeTradeId = null;
     async function loadTrades() {
-        const res = await fetch('trade_api.php?action=get_trades');
+        const res = await fetch('includes/trade_api.php?action=get_trades');
         const trades = await res.json();
         const list = document.getElementById('tradeList');
         list.innerHTML = '';
@@ -80,7 +80,7 @@
         loadMessages();
     }
     async function loadMessages() {
-        const res = await fetch(`trade_api.php?action=get_messages&trade_id=${activeTradeId}`);
+        const res = await fetch(`includes/trade_api.php?action=get_messages&trade_id=${activeTradeId}`);
         const msgs = await res.json();
         const area = document.getElementById('messageArea');
         area.innerHTML = '';
@@ -100,7 +100,7 @@
         const formData = new FormData();
         formData.append('trade_id', activeTradeId);
         formData.append('message', text);
-        await fetch('trade_api.php?action=send_message', { method: 'POST', body: formData });
+        await fetch('includes/trade_api.php?action=send_message', { method: 'POST', body: formData });
         document.getElementById('msgText').value = '';
         loadMessages();
     };
@@ -109,7 +109,7 @@
         const formData = new FormData();
         formData.append('trade_id', activeTradeId);
         formData.append('status', 'completed');
-        await fetch('trade_api.php?action=update_status', { method: 'POST', body: formData });
+        await fetch('includes/trade_api.php?action=update_status', { method: 'POST', body: formData });
         alert('Trade completed!');
         window.location.reload();
     };

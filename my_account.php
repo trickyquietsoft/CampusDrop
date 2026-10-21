@@ -25,7 +25,7 @@ if (!$user) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account | CampusDrop</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <style>
         .account-container { max-width: 900px; margin: 4rem auto; padding: 0 1rem; }
         .profile-card { 
@@ -141,7 +141,7 @@ if (!$user) {
 
         // --- Posts Logic ---
         async function loadMyPosts() {
-            const res = await fetch('listing_api.php?action=get_mine');
+            const res = await fetch('includes/listing_api.php?action=get_mine');
             const data = await res.json();
             // Filter for current user (simplified: API should ideally handle ?seller_id=)
             // For now we assume the API returns all and we filter locally or API is updated
@@ -164,14 +164,14 @@ if (!$user) {
         async function deleteListing(id) {
             if (!confirm('Delete this listing?')) return;
             // Changed method to POST for better XAMPP/Apache compatibility
-            const res = await fetch(`listing_api.php?action=delete&id=${id}`, { method: 'POST' });
+            const res = await fetch(`includes/listing_api.php?action=delete&id=${id}`, { method: 'POST' });
             const result = await res.json();
             if (result.success) loadMyPosts(); else alert(result.error);
         }
 
         // --- Trades & Messages Logic ---
         async function loadTrades() {
-            const res = await fetch('trade_api.php?action=get_trades');
+            const res = await fetch('includes/trade_api.php?action=get_trades');
             const data = await res.json();
             const list = document.getElementById('trade-list');
             list.innerHTML = data.length ? '' : '<p style="padding:1rem;">No active trades.</p>';
@@ -199,7 +199,7 @@ if (!$user) {
         }
 
         async function loadMessages(tradeId) {
-            const res = await fetch(`trade_api.php?action=get_messages&trade_id=${tradeId}`);
+            const res = await fetch(`includes/trade_api.php?action=get_messages&trade_id=${tradeId}`);
             const data = await res.json();
             const area = document.getElementById('messages-area');
             area.innerHTML = '';
@@ -220,7 +220,7 @@ if (!$user) {
             formData.append('trade_id', activeTradeId);
             formData.append('message', text);
 
-            const res = await fetch('trade_api.php?action=send_message', {
+            const res = await fetch('includes/trade_api.php?action=send_message', {
                 method: 'POST',
                 body: formData
             });

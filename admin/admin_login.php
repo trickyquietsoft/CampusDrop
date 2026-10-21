@@ -13,7 +13,7 @@ if (isset($_SESSION['admin_id'])) { header('Location: admin_dashboard.php'); exi
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal | CampusDrop</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         body { background: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }
         .auth-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
@@ -94,7 +94,7 @@ if (isset($_SESSION['admin_id'])) { header('Location: admin_dashboard.php'); exi
 
         document.getElementById('loginForm').onsubmit = async (e) => {
             e.preventDefault();
-            const res = await fetch('admin_auth_api.php?action=login', {
+            const res = await fetch('../includes/admin_auth_api.php?action=login', {
                 method: 'POST',
                 body: JSON.stringify({ email: document.getElementById('l_email').value, password: document.getElementById('l_pass').value })
             });
@@ -105,7 +105,7 @@ if (isset($_SESSION['admin_id'])) { header('Location: admin_dashboard.php'); exi
 
         document.getElementById('regForm').onsubmit = async (e) => {
             e.preventDefault();
-            const res = await fetch('admin_auth_api.php?action=register', {
+            const res = await fetch('../includes/admin_auth_api.php?action=register', {
                 method: 'POST',
                 body: JSON.stringify({
                     first_name: document.getElementById('r_fn').value,

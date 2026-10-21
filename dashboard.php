@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Dashboard - CampusDrop</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <header>
@@ -37,7 +37,7 @@
     </div>
     <script>
     async function loadDashboard() {
-        const res = await fetch('listing_api.php?action=get');
+        const res = await fetch('includes/listing_api.php?action=get');
         const books = await res.json();
         const list = document.getElementById('myListings');
         list.innerHTML = '';
@@ -57,7 +57,7 @@
         if (!confirm('Are you sure?')) return;
         const formData = new FormData();
         formData.append('id', id);
-        const res = await fetch('listing_api.php?action=delete', { method: 'POST', body: formData });
+        const res = await fetch('includes/listing_api.php?action=delete', { method: 'POST', body: formData });
         const result = await res.json();
         if (result.success) { alert('Removed.'); loadDashboard(); } else { alert(result.error); }
     }

@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Details - CampusDrop</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <header>
@@ -18,7 +18,7 @@
         <div class="nav-top">
             <div style="margin-right: 1rem; font-size: 0.9rem; font-weight: 600;">
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="auth_api.php?action=logout" style="text-decoration:, none; color: var(--secondary);">Logout</a>
+                    <a href="includes/auth_api.php?action=logout" style="text-decoration:, none; color: var(--secondary);">Logout</a>
                 <?php else: ?>
                     <a href="login.php" style="text-decoration: none; color: var(--secondary);">Login</a>
                 <?php endif; ?>
@@ -74,7 +74,7 @@
         const params = new URLSearchParams(window.location.search);
         const id = params.get('id');
         if (!id) return;
-        const res = await fetch(`listing_api.php?action=get&id=${id}`);
+        const res = await fetch(`includes/listing_api.php?action=get&id=${id}`);
         const book = await res.json();
         if (!book || book.error) {
             alert('Book not found');
@@ -103,7 +103,7 @@
         const formData = new FormData();
         formData.append('listing_id', id);
         formData.append('offer', offer);
-        const res = await fetch('trade_api.php?action=initiate', { method: 'POST', body: formData });
+        const res = await fetch('includes/trade_api.php?action=initiate', { method: 'POST', body: formData });
         const result = await res.json();
         if (result.success) {
             alert('Request sent! Redirecting to your inbox...');

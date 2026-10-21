@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set(display_errors, 1);
-require_once C:/xampp/htdocs/db_connect.php;
+require_once C:/xampp/htdocs/../includes/db_connect.php;
 
 echo "Checking DB...\n";
 try {

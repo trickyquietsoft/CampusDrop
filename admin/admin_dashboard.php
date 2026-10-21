@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["admin_id"])) { header("Location: admin_login.php"); exit(); }
-require_once 'db_connect.php';
+require_once '../includes/db_connect.php';
 
 // 1. Pagination Setup
 $limit = 10; // Constant page size (K)
@@ -46,7 +46,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusDrop | Admin Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         :root { --admin-accent: #d32f2f; --admin-bg: #fcfcfc; }
         body { background-color: var(--admin-bg); font-family: sans-serif; }

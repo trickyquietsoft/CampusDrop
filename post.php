@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List a Textbook - CampusDrop</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <header>
@@ -19,7 +19,7 @@ if (!isset($_SESSION['user_id'])) {
         <div class="nav-top">
             <div style="margin-right: 1rem; font-size: 0.9rem; font-weight: 600;">
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <a href="auth_api.php?action=logout" style="text-decoration: none; color: var(--secondary);">Logout</a>
+                    <a href="includes/auth_api.php?action=logout" style="text-decoration: none; color: var(--secondary);">Logout</a>
                 <?php else: ?>
                     <a href="login.php" style="text-decoration: none; color: var(--secondary);">Login</a>
                 <?php endif; ?>
@@ -107,7 +107,7 @@ if (!isset($_SESSION['user_id'])) {
         for (let i = 0; i < imageInput.files.length; i++) {
             formData.append('images[]', imageInput.files[i]);
         }
-        const res = await fetch('listing_api.php?action=create', { method: 'POST', body: formData });
+        const res = await fetch('includes/listing_api.php?action=create', { method: 'POST', body: formData });
         const result = await res.json();
         if (result.success) {
             alert('Listed!');

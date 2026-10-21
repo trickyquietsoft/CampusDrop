@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join CampusDrop - Register</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
     <header>
@@ -59,7 +59,7 @@
             password: document.getElementById('password').value
         };
 
-        const res = await fetch('auth_api.php?action=register', {
+        const res = await fetch('includes/auth_api.php?action=register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)

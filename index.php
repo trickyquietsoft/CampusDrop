@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusDrop | Textbook Marketplace</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body style="background-color: var(--background);">
     <header>
@@ -21,7 +21,7 @@
             <a href="contact.php" style="text-decoration:none; color:var(--text); font-weight:600;">Contact</a>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <a href="my_account.php" style="text-decoration:none; color:var(--primary); font-weight:600;">My Account</a>
-                <a href="auth_api.php?action=logout" style="text-decoration:none; color:var(--text); font-weight:600; margin-left: 1rem;">Logout</a>
+                <a href="includes/auth_api.php?action=logout" style="text-decoration:none; color:var(--text); font-weight:600; margin-left: 1rem;">Logout</a>
             <?php else: ?>
                 <a href="login.php" style="text-decoration:none; color:var(--text); font-weight:600;">Login</a>
                 <a href="register.php" class="btn-post" style="padding: 0.3rem 0.6rem; font-size: 0.8rem;">Register</a>
@@ -44,7 +44,7 @@
         <h2 style="margin-bottom: 1.5rem;">Trending Textbooks</h2>
         <div class="marketplace-grid">
             <?php
-            require_once 'listing_api.php';
+            require_once 'includes/listing_api.php';
             
             $search = $_GET['search'] ?? '';
             

@@ -1,5 +1,5 @@
 <?php
-require_once 'db_connect.php';
+require_once '../includes/db_connect.php';
 $users = $pdo->query("SELECT user_id, first_name, university FROM users")->fetchAll(PDO::FETCH_ASSOC);
 $listings = $pdo->query("SELECT listing_id, seller_id, title FROM listings")->fetchAll(PDO::FETCH_ASSOC);
 $trades = $pdo->query("SELECT * FROM trades")->fetchAll(PDO::FETCH_ASSOC);
