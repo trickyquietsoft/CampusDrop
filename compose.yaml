@@ -3,7 +3,7 @@ version: '3.8'
 services:
   webserver:
     build: ./php
-    container_name: lamp_webserver
+    container_name: campusdrop_webserver
     ports:
       - "8080:80"
     environment:
@@ -19,7 +19,7 @@ services:
 
   mysql_db:
     image: mysql:8.0
-    container_name: mysql_db
+    container_name: campusdrop_db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
