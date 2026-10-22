@@ -1,8 +1,8 @@
-version: '3.8'
-
 services:
   webserver:
-    build: ./php
+    build:
+      context: .
+      dockerfile: php/Dockerfile
     container_name: lamp_webserver
     ports:
       - "8080:80"

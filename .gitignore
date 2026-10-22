@@ -1,0 +1,26 @@
+# Environment variables containing secrets
+.env
+
+# Docker persistent data volumes
+mysql_data/
+
+# OS metadata files
+Thumbs.db
+desktop.ini
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files and logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+tmp/
+temp/
