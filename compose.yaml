@@ -14,6 +14,9 @@ services:
     depends_on:
       mysql_db:
         condition: service_healthy
+    volumes:
+      - ./www:/var/www/html
+      - uploads_data:/var/www/html/uploads
     networks:
       - backend_network
 
@@ -41,6 +44,7 @@ services:
 
 volumes:
   mysql_data:
+  uploads_data:
 
 networks:
   backend_network:
