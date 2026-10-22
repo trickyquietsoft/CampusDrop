@@ -11,14 +11,11 @@
  */
 
 // --- Configuration Constants ---
-// The hostname of the MySQL server (localhost for XAMPP)
-define('DB_HOST', 'localhost');
-// Updated to match the user's local database title
-define('DB_NAME', 'campusdrop_schema');
-// Default XAMPP MySQL username
-define('DB_USER', 'root');
-// Default XAMPP MySQL password (empty string)
-define('DB_PASS', '');
+// Use environment variables for Docker compatibility, fallback to localhost for XAMPP
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_NAME', getenv('DB_NAME') ?: 'campusdrop_schema');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
 
 try {
     /**

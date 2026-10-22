@@ -72,16 +72,3 @@ $pdo = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS);
 4. **Display**: Update the loop in `index.php` to show the genre on the product card.
 
 ---
-
-## 📝 5. Full Code Appendix
-*(The entire code for every file is available in the /campusdrop directory)*
-
-## 📝 Change Log
-- Added `messages.php`: Implemented trade chat and state management.
-- Added `dashboard.php`: Implemented seller inventory and listing deletion.
-- Integrated `trade_api.php` with Frontend UI for the complete transaction loop.
-- 2026-10-06 16:15 | Feature: Implemented Campus-Based Scoping (JOIN logic in `listing_api.php` to filter books by user's university).
-- 2026-10-06 16:30 | Feature: Added University Badging to `index.php` and `product.php` for at-a-glance campus identification.
-- 2026-10-06 16:45 | Feature: Scalability Pivot; shifted architecture to support any .edu institution.
-- 2026-10-06 16:50 | Strategy: Developed "A-Grade" presentation script, risk mitigation strategies, and demo storyboard.
-- 2026-10-06 17:05 | Bug Fix: Resolved message alignment issue in `messages.php` by implementing dynamic styling based on `sender_id`.
