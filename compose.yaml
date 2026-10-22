@@ -9,8 +9,10 @@ services:
     volumes:
       - ./www:/var/www/html
     depends_on:
-      - php
-      - postgresSQL_db
+      php:
+        condition: service_started
+      mysql_db:
+        condition: service_healthy
     networks:
       - backend_network
 
@@ -22,25 +24,31 @@ services:
     networks:
       - backend_network
 
-  postgresSQL_db:
-    image: postgres
-    container_name: postgres
+  mysql_db:
+    image: mysql:8.0
+    container_name: mysql_db
     restart: always
     environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: admin
-      POSTGRES_DB: textbook_project
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3200:5432"
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h=localhost", "-u=${MYSQL_USER}", "-p${MYSQL_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./postgres:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+      - ./mysql_init:/docker-entrypoint-initdb.d
     networks:
       - backend_network
 
 volumes:
-  postgres_data:
+  mysql_data:
 
 networks:
   backend_network:
-	driver: bridge
+    driver: bridge
