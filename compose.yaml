@@ -1,26 +1,19 @@
 version: '3.8'
 
 services:
-  apache:
-    container_name: apache
-    build: ./apache
+  webserver:
+    build: ./php
+    container_name: lamp_webserver
     ports:
       - "8080:80"
-    volumes:
-      - ./www:/var/www/html
+    environment:
+      - DB_HOST=mysql_db
+      - DB_USER=${MYSQL_USER}
+      - DB_PASS=${MYSQL_PASSWORD}
+      - DB_NAME=${MYSQL_DATABASE}
     depends_on:
-      php:
-        condition: service_started
       mysql_db:
         condition: service_healthy
-    networks:
-      - backend_network
-
-  php:
-    build: ./php
-    container_name: php
-    volumes: 
-      - ./www:/var/www/html
     networks:
       - backend_network
 
