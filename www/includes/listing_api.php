@@ -14,6 +14,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Start output buffering to prevent accidental whitespace or notices from breaking JSON
+ob_start();
+
 require_once 'db_connect.php';
 require_once 'upload_manager.php';
 
@@ -24,6 +27,7 @@ require_once 'upload_manager.php';
 if (basename($_SERVER['PHP_SELF']) === 'listing_api.php') {
     
     // Output as JSON for direct API calls
+    ob_clean();
     header('Content-Type: application/json');
 
     // Security Gatekeeper for modifying data

@@ -94,21 +94,69 @@ if (!isset($_SESSION['user_id'])) {
     <script>
     document.getElementById('postForm').onsubmit = async (e) => {
         e.preventDefault();
-        
-        // Automatically capture all form inputs and file arrays natively
-        const formData = new FormData(document.getElementById('postForm'));
 
-        const res = await fetch('includes/listing_api.php?action=create', { 
-            method: 'POST', 
-            body: formData 
-        });
-        
-        const result = await res.json();
-        if (result.success) {
-            alert('Listed!');
-            window.location.href = result.redirect || 'index.php';
-        } else { 
-            alert('Error: ' + (result.error || 'Unknown error occurred.')); 
+        const form = e.currentTarget;
+        const submitButton = form.querySelector(
+            'button[type="submit"]'
+        );
+
+        const originalText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = 'Posting...';
+
+        try {
+            const formData = new FormData(form);
+
+            const res = await fetch(
+                'includes/listing_api.php?action=create',
+                {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        Accept: 'application/json'
+                    }
+                }
+            );
+
+            const responseText = await res.text();
+
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch {
+                console.error('Invalid API response:', {
+                    status: res.status,
+                    body: responseText
+                });
+
+                throw new Error(
+                    `Server returned an invalid response (HTTP ${res.status}). ` +
+                    'Check the browser console and PHP logs.'
+                );
+            }
+
+            if (!res.ok || !result.success) {
+                console.error('Listing API error:', {
+                    status: res.status,
+                    result
+                });
+
+                throw new Error(
+                    result.error ||
+                    `Request failed with HTTP ${res.status}.`
+                );
+            }
+
+            alert('Book listed successfully!');
+            window.location.assign(result.redirect || 'index.php');
+
+        } catch (error) {
+            console.error('Book submission failed:', error);
+            alert(error.message || 'Unable to post your book.');
+
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
         }
     };
     </script>
