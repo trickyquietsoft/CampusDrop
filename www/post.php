@@ -94,25 +94,22 @@ if (!isset($_SESSION['user_id'])) {
     <script>
     document.getElementById('postForm').onsubmit = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append('title', document.getElementById('title').value);
-        formData.append('author', document.getElementById('author').value);
-        formData.append('isbn', document.getElementById('isbn').value);
-        formData.append('course_code', document.getElementById('course_code').value);
-        formData.append('price', document.getElementById('price').value);
-        formData.append('condition', document.getElementById('condition').value);
-        formData.append('listing_type', document.getElementById('listing_type').value);
-        formData.append('description', document.getElementById('description').value);
-        const imageInput = document.getElementById('images');
-        for (let i = 0; i < imageInput.files.length; i++) {
-            formData.append('images[]', imageInput.files[i]);
-        }
-        const res = await fetch('includes/listing_api.php?action=create', { method: 'POST', body: formData });
+        
+        // Automatically capture all form inputs and file arrays natively
+        const formData = new FormData(document.getElementById('postForm'));
+
+        const res = await fetch('includes/listing_api.php?action=create', { 
+            method: 'POST', 
+            body: formData 
+        });
+        
         const result = await res.json();
         if (result.success) {
             alert('Listed!');
-            window.location.href = 'index.php';
-        } else { alert('Error: ' + result.error); }
+            window.location.href = result.redirect || 'index.php';
+        } else { 
+            alert('Error: ' + (result.error || 'Unknown error occurred.')); 
+        }
     };
     </script>
 </body>

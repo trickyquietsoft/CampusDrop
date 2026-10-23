@@ -95,7 +95,7 @@ function handleCreate($pdo) {
         $listingId = $pdo->lastInsertId();
 
         // Safely check if a file was actually uploaded
-        if (!empty($_FILES['images']['name'][0])) {
+        if (isset($_FILES['images']) && !empty($_FILES['images']['name'][0])) {
             uploadListingImages($pdo, $listingId, $_FILES['images']);
         }
 

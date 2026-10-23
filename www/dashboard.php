@@ -37,7 +37,7 @@
     </div>
     <script>
     async function loadDashboard() {
-        const res = await fetch('includes/listing_api.php?action=get');
+        const res = await fetch('includes/listing_api.php?action=get_mine');
         const books = await res.json();
         const list = document.getElementById('myListings');
         list.innerHTML = '';

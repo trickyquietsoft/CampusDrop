@@ -25,13 +25,20 @@ function uploadListingImages($pdo, $listingId, $files) {
 
     /**
      * Directory Management
-     * We create a folder specific to each listing to avoid file name collisions.
-     * Path: /uploads/books/{listing_id}/
+     * Physical path is where the file is saved on disk.
+     * Database path is what the browser uses to request the image.
+     * 
+     * In Docker, /var/www/html/uploads is a mounted volume.
+     * To avoid "uploads/uploads/..." double-folder paths, we use the absolute volume path for mkdir.
      */
-    $uploadDir = 'uploads/books/' . $listingId . '/';
-    if (!is_dir($uploadDir)) {
+    $storageDir = '/var/www/html/uploads/books/' . $listingId . '/';
+    $dbDir = 'uploads/books/' . $listingId . '/';
+
+    if (!is_dir($storageDir)) {
         // 0777 permissions allow the server to write the folder
-        mkdir($uploadDir, 0777, true);
+        if (!mkdir($storageDir, 0777, true)) {
+            throw new Exception("Failed to create upload directory: $storageDir");
+        }
     }
 
     $uploadedPaths = [];
@@ -56,20 +63,24 @@ function uploadListingImages($pdo, $listingId, $files) {
          */
         $extension = pathinfo($name, PATHINFO_EXTENSION);
         $fileName = 'img_' . time() . '_' . $index . '.' . $extension;
-        $destPath = $uploadDir . $fileName;
+        
+        // Physical destination for the move_uploaded_file call
+        $physicalDestPath = $storageDir . $fileName;
+        // Path stored in the DB for the browser
+        $dbDestPath = $dbDir . $fileName;
 
         // Move the file from the temporary system folder to our uploads folder
-        if (move_uploaded_file($tmpName, $destPath)) {
+        if (move_uploaded_file($tmpName, $physicalDestPath)) {
             /**
              * Database Sync
-             * Save the file path into the listing_images table.
+             * Save the browser-relative file path into the listing_images table.
              * The first image in the array is automatically marked as the 'Primary' photo.
              */
             $stmt = $pdo->prepare("INSERT INTO listing_images (listing_id, image_path, is_primary) VALUES (?, ?, ?)");
             $isPrimary = ($index === 0) ? 1 : 0;
-            $stmt->execute([$listingId, $destPath, $isPrimary]);
+            $stmt->execute([$listingId, $dbDestPath, $isPrimary]);
             
-            $uploadedPaths[] = $destPath;
+            $uploadedPaths[] = $dbDestPath;
         }
     }
 
@@ -82,7 +93,7 @@ function uploadListingImages($pdo, $listingId, $files) {
  * This prevents the server from filling up with "orphaned" images.
  */
 function cleanupListingImages($listingId) {
-    $dir = 'uploads/books/' . $listingId . '/';
+    $dir = '/var/www/html/uploads/books/' . $listingId . '/';
     if (is_dir($dir)) {
         // Find all files in the folder including hidden ones
         $files = glob($dir . '{*,.*}', GLOB_BRACE);

@@ -131,7 +131,7 @@ function handleLogin($pdo) {
  */
 function handleLogout() {
     session_destroy();
-    header('Location: index.php');
+    header('Location: ../index.php');
     exit;
 }
 ?>
